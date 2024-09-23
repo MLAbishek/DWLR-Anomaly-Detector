@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWLR Monitoring System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js'></script>
+    <link href='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' rel='stylesheet' />
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">DWLR Monitor</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#map">Map</a></li>
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home">
+            <h1>Digital Water Level Recorder Monitoring System</h1>
+            <p>Real-time water level monitoring across India</p>
+        </section>
+
+        <section id="map">
+            <h2>DWLR Map</h2>
+            <div id="map-container"></div>
+        </section>
+
+        {% if current_user.is_authenticated %}
+        <section id="data">
+            <h2>Submit Telemetry Data</h2>
+            <form id="telemetry-form">
+                <div class="form-group">
+                    <label for="timestamp">Timestamp:</label>
+                    <input type="datetime-local" id="timestamp" name="timestamp" required>
+                </div>
+                <div class="form-group">
+                    <label for="water_level">Water Level (m):</label>
+                    <input type="number" id="water_level" name="water_level" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="temperature">Temperature (°C):</label>
+                    <input type="number" id="temperature" name="temperature" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="rainfall">Rainfall (mm):</label>
+                    <input type="number" id="rainfall" name="rainfall" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="ph">pH:</label>
+                    <input type="number" id="ph" name="ph" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="dissolved_oxygen">Dissolved Oxygen (mg/L):</label>
+                    <input type="number" id="dissolved_oxygen" name="dissolved_oxygen" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="latitude">Latitude:</label>
+                    <input type="number" id="latitude" name="latitude" step="0.000001" required>
+                </div>
+                <div class="form-group">
+                    <label for="longitude">Longitude:</label>
+                    <input type="number" id="longitude" name="longitude" step="0.000001" required>
+                </div>
+                <button type="submit">Submit Data</button>
+            </form>
+            <div id="message"></div>
+        </section>
+        {% endif %}
+
+        <section id="about">
+            <h2>About DWLR Monitoring</h2>
+            <p>Our Digital Water Level Recorder (DWLR) Monitoring System provides real-time data on water levels across
+                India. This system helps in efficient water resource management and early flood warning.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 DWLR Monitoring System. All rights reserved.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
